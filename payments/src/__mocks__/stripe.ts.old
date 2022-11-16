@@ -1,0 +1,8 @@
+//  fake copy of stripe runs only in test 
+export const stripe = {
+  charges: {
+    create: jest.fn().mockResolvedValue({}),
+  },
+};
+
+//it automatically resolves itself and returns empty object

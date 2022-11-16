@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-mongo # how to deployment find the pod that it creates
+  template:
+    metadata:
+      labels:
+        app: auth-mongo  # name of pod
+    spec:
+      containers:
+        - name: auth-mongo
+          image: mongo # on hub.docker.com that is hosted Image we can run to get mongodb
+---
+apiVersion: v1 # cluster ip service to connect the pod that this deployment creates
+kind: Service
+metadata:
+  name: auth-mongo-srv
+spec:
+  selector:
+    app: auth-mongo # selector: app:  is gonna tell to which pod wants to get excess to. so find a pod with label auth-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017 # by default mongo listens on 27017 
+      targetPort: 27017

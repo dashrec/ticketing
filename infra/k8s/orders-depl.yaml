@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders
+  template:
+    metadata:
+      labels:
+        app: orders
+    spec:
+      containers:
+        - name: orders
+          image: dash007/orders
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: ticketing    
+            - name: MONGO_URI
+              value: 'mongodb://orders-mongo-srv:27017/orders'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-srv
+spec:
+  selector:
+    app: orders
+  ports:
+    - name: orders
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+# The ticket service is going to need to decide whether or not a request includes a valid JSON web token.
+# And we can only validate a token if we have the original key that we created the token with.  key: JWT_KEY
+# cluster ip service is responsible for communication with outside word of cluster
+#   value: orders-mongo-srv comes from orders-mongo-depl.yaml file in services name: orders-mongo-srv
+# inside orders-mongo-srv:27017 mongodb there can be different databases and this is an indicator for different dbs /orders  
+#  metadata.name gets pods unique name thats randomly generated. so whenever create a pod to run a ticket service cubernetes is going to  take a look at a pods name and provides as a nats_client_id
