@@ -18,7 +18,7 @@ const cookie = await global.signin();
   const response = await request(app).get('/api/users/currentuser')
     .set('Cookie', cookie) // set Cookie header and then actual cookie 
     .send()
-    .expect(400);
+    .expect(200);
 
     expect(response.body.currentUser.email).toEqual('test@test.com');
    // console.log(response.body); //cookie is not included in request because supertest does not have it by default
