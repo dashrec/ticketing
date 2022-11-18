@@ -78,7 +78,3 @@ spec:
     app.kubernetes.io/instance: ingress-nginx
     app.kubernetes.io/component: controller
 
-# anytime someone or 'us with postman for testing' makes request to cluster pod. request has path /api/users/?(.*)  ?(.*)  = any. then we ar gonna send request back to 3000
-# auth-srv is from auth-depl.yaml file service name
-# ingress engin x = incoming requests from outside of cluster 
-# array of different paths - row 20 --> path: /?(.*) means capture every incoming path. its important to be at the end so that if there is no any match above it will catch it
