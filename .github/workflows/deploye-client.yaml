@@ -1,4 +1,4 @@
-name: deploye-client
+name: deploy-client
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - 'client/**'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,6 +17,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - run: cd client && docker build -t dash007/ticketing-client .
       - run: docker push dash007/ticketing-client
       - uses: digitalocean/action-doctl@v2
         with:
