@@ -13,8 +13,8 @@ export default ({ req }) => {
   if (typeof window === 'undefined') {
     // We are on the server
     //inside headers there are, cookie object and domain name as well ticketing.dev 
-    return axios.create({ baseURL: 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local', headers: req.headers }); //create preconfigured version of axios
-
+   // return axios.create({ baseURL: 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local', headers: req.headers }); //create preconfigured version of axios
+   return axios.create({ baseURL: 'http://it-cmps.com', headers: req.headers }); //create preconfigured version of axios
   } ////baseURL = service name, namespace, ... 
   
   else {
