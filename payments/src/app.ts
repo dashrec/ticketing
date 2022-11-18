@@ -14,12 +14,17 @@ const app = express();
 app.set('trust proxy', true); //make express aware that behind the proxy is a nginx. nad trust the traffic even though comming from proxy
 app.use(json());
 
-app.use(
+/* app.use(
  cookieSession({
     signed:false,
     secure: process.env.NODE_ENV !=='test', // secure true means cookies ar only gonna get shared  when someone makes request to our server  over https connection so supertest is not a https request  
 })); // process.env.NODE_ENV !=='test' means if its test give false otherwise true
-
+ */
+app.use(
+  cookieSession({
+    signed: false,
+    secure: false,
+  }))
 
 app.use(currentUser); // if user is authenticated its gonna set on currentUser property
 app.use(createChargeRouter);
